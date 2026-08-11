@@ -20,6 +20,9 @@
   "engines": {
     "lumine": "^1.0.0"
   },
+  "backgroundTips": [
+    "{{packageName}} provides diagnostics, completion, navigation, formatting, and refactoring whenever a Dockerfile is open."
+  ],
   "main": "./lib/main",
   "files": [
     "lib",

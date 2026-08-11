@@ -1,0 +1,148 @@
+{
+  "name": "ide-dockerfile full feature matrix",
+  "adapter": "ide-dockerfile",
+  "project": "fixtures/drive",
+  "file": "fixtures/drive/Dockerfile",
+  "grammarScope": "source.dockerfile",
+  "checks": [
+    {
+      "name": "diagnostics",
+      "kind": "diagnostics",
+      "minLength": 3,
+      "expect": { "type": "array", "minLength": 3 }
+    },
+    {
+      "name": "completion",
+      "method": "textDocument/completion",
+      "position": [6, 0],
+      "params": { "context": { "triggerKind": 1 } },
+      "expect": { "path": "*.data", "includes": "RUN" }
+    },
+    {
+      "name": "completion resolve",
+      "method": "completionItem/resolve",
+      "document": false,
+      "paramsFrom": {
+        "$": {
+          "check": "completion",
+          "path": "$",
+          "find": { "path": "data", "equals": "RUN" }
+        }
+      },
+      "expect": {
+        "path": "documentation.value",
+        "matches": "Execute any commands"
+      }
+    },
+    {
+      "name": "hover",
+      "method": "textDocument/hover",
+      "position": [0, 2],
+      "expect": { "path": "contents.value", "matches": "baseImage" }
+    },
+    {
+      "name": "document symbols",
+      "method": "textDocument/documentSymbol",
+      "expect": { "path": "*.name", "includes": "ARG" }
+    },
+    {
+      "name": "document highlights",
+      "method": "textDocument/documentHighlight",
+      "position": [3, 15],
+      "expect": { "type": "array", "minLength": 4 }
+    },
+    {
+      "name": "definition",
+      "method": "textDocument/definition",
+      "position": [3, 15],
+      "expect": { "path": "range.start.line", "equals": 2 }
+    },
+    {
+      "name": "prepare rename",
+      "method": "textDocument/prepareRename",
+      "position": [3, 15],
+      "expect": { "path": "start.character", "equals": 14 }
+    },
+    {
+      "name": "rename",
+      "method": "textDocument/rename",
+      "position": [3, 15],
+      "params": { "newName": "ROOT" },
+      "expect": { "path": "changes", "type": "object", "minLength": 1 }
+    },
+    {
+      "name": "formatting",
+      "method": "textDocument/formatting",
+      "params": { "options": { "tabSize": 2, "insertSpaces": true } },
+      "expect": { "type": "array", "minLength": 1 }
+    },
+    {
+      "name": "range formatting",
+      "method": "textDocument/rangeFormatting",
+      "params": {
+        "range": {
+          "start": { "line": 6, "character": 0 },
+          "end": { "line": 7, "character": 13 }
+        },
+        "options": { "tabSize": 2, "insertSpaces": true }
+      },
+      "expect": { "type": "array", "minLength": 1 }
+    },
+    {
+      "name": "on-type formatting",
+      "method": "textDocument/onTypeFormatting",
+      "position": [7, 0],
+      "params": {
+        "ch": "\\",
+        "options": { "tabSize": 2, "insertSpaces": true }
+      },
+      "expect": { "type": "array" }
+    },
+    {
+      "name": "signature help",
+      "method": "textDocument/signatureHelp",
+      "position": [8, 6],
+      "params": { "context": { "triggerKind": 1, "isRetrigger": false } },
+      "expect": { "path": "signatures", "type": "array", "minLength": 2 }
+    },
+    {
+      "name": "document links",
+      "method": "textDocument/documentLink",
+      "expect": { "type": "array", "minLength": 1 }
+    },
+    {
+      "name": "document link resolve",
+      "method": "documentLink/resolve",
+      "document": false,
+      "paramsFrom": { "$": { "check": "document links", "path": "0" } },
+      "expect": { "path": "target", "matches": "hub\\.docker\\.com" }
+    },
+    {
+      "name": "semantic tokens",
+      "method": "textDocument/semanticTokens/full",
+      "expect": { "path": "data", "type": "array", "minLength": 100 }
+    },
+    {
+      "name": "folding ranges",
+      "method": "textDocument/foldingRange",
+      "expect": { "type": "array", "minLength": 1 }
+    },
+    {
+      "name": "code actions",
+      "method": "textDocument/codeAction",
+      "paramsFrom": {
+        "range": { "check": "diagnostics", "path": "0.range" },
+        "context.diagnostics": { "check": "diagnostics", "path": "$" }
+      },
+      "expect": {
+        "path": "*.title",
+        "includes": "Convert instruction to uppercase"
+      }
+    },
+    {
+      "name": "restart lifecycle",
+      "kind": "restart",
+      "expect": { "path": "current", "equals": "running" }
+    }
+  ]
+}

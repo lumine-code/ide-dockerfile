@@ -1,0 +1,234 @@
+{
+  "name": "ide-dockerfile",
+  "author": "lumine-code",
+  "description": "Dockerfile language-server adapter.",
+  "repository": "https://github.com/lumine-code/ide-dockerfile",
+  "bugs": {
+    "url": "https://github.com/lumine-code/ide-dockerfile/issues"
+  },
+  "keywords": [
+    "language-server",
+    "lsp",
+    "container",
+    "oci",
+    "podman",
+    "buildkit",
+    "intellisense"
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "engines": {
+    "lumine": "^1.0.0"
+  },
+  "main": "./lib/main",
+  "files": [
+    "lib",
+    "spec"
+  ],
+  "scripts": {
+    "test": "lumine --test spec",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "consumedServices": {
+    "ide-client": {
+      "versions": {
+        "^1.0.0": "consumeIdeClient"
+      }
+    }
+  },
+  "dependencies": {
+    "dockerfile-language-server-nodejs": "0.15.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.2.2",
+    "globals": "^17.9.0",
+    "prettier": "^3.9.6",
+    "vscode-jsonrpc": "^9.0.1"
+  },
+  "configSchema": {
+    "serverPath": {
+      "title": "Server Path",
+      "description": "Absolute path to a `docker-langserver` executable. Leave empty to use the bundled server.",
+      "type": "string",
+      "default": ""
+    },
+    "features": {
+      "title": "Features",
+      "description": "Which parts of the Dockerfile server the editor uses. Turning one off hands it to the next server serving the same file.",
+      "type": "object",
+      "properties": {
+        "diagnostics": {
+          "title": "Diagnostics",
+          "description": "Report invalid and discouraged Dockerfile constructs in the linter.",
+          "type": "boolean",
+          "default": true
+        },
+        "autocomplete": {
+          "title": "Autocomplete",
+          "description": "Offer Dockerfile instructions, arguments, variables, images and build stages.",
+          "type": "boolean",
+          "default": true
+        },
+        "hover": {
+          "title": "Hover",
+          "description": "Show directive documentation and symbol information on hover.",
+          "type": "boolean",
+          "default": true
+        },
+        "signature": {
+          "title": "Signature Help",
+          "description": "Show the expected form of the current Dockerfile instruction.",
+          "type": "boolean",
+          "default": true
+        },
+        "definition": {
+          "title": "Go To Definition",
+          "description": "Jump to build-stage and variable definitions.",
+          "type": "boolean",
+          "default": true
+        },
+        "symbols": {
+          "title": "Symbols",
+          "description": "Serve Dockerfile symbols to go-to-symbol.",
+          "type": "boolean",
+          "default": true
+        },
+        "outline": {
+          "title": "Outline",
+          "description": "Fill the outline panel with build stages and instructions.",
+          "type": "boolean",
+          "default": true
+        },
+        "format": {
+          "title": "Format",
+          "description": "Format whole Dockerfiles and selected ranges.",
+          "type": "boolean",
+          "default": true
+        },
+        "rename": {
+          "title": "Rename",
+          "description": "Rename resolved variables and build stages.",
+          "type": "boolean",
+          "default": true
+        },
+        "codeActions": {
+          "title": "Code Actions",
+          "description": "Offer fixes reported by the Dockerfile server.",
+          "type": "boolean",
+          "default": true
+        },
+        "semanticTokens": {
+          "title": "Semantic Tokens",
+          "description": "Apply server-computed highlighting to Dockerfile symbols.",
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "diagnostics": {
+      "title": "Diagnostics",
+      "description": "Severity assigned to individual Dockerfile checks.",
+      "type": "object",
+      "properties": {
+        "deprecatedMaintainer": {
+          "title": "Deprecated Maintainer",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "directiveCasing": {
+          "title": "Directive Casing",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "emptyContinuationLine": {
+          "title": "Empty Continuation Line",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "instructionCasing": {
+          "title": "Instruction Casing",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "instructionCmdMultiple": {
+          "title": "Multiple CMD Instructions",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "instructionEntrypointMultiple": {
+          "title": "Multiple ENTRYPOINT Instructions",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "instructionHealthcheckMultiple": {
+          "title": "Multiple HEALTHCHECK Instructions",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        },
+        "instructionJSONInSingleQuotes": {
+          "title": "Single-Quoted JSON Instruction",
+          "type": "string",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning"
+        }
+      }
+    },
+    "formatter": {
+      "title": "Formatter",
+      "description": "How the Dockerfile formatter treats multiline instructions.",
+      "type": "object",
+      "properties": {
+        "ignoreMultilineInstructions": {
+          "title": "Ignore Multiline Instructions",
+          "description": "Leave multiline instructions unchanged while formatting.",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}

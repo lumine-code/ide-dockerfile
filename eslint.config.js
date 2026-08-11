@@ -16,10 +16,7 @@ module.exports = [
       globals: { ...globals.browser, ...globals.node, lumine: "readonly" },
     },
     rules: {
-      "no-unused-vars": [
-        "error",
-        { varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
-      ],
+      "no-unused-vars": ["error", { varsIgnorePattern: "^_", argsIgnorePattern: "^_" }],
       "n/no-missing-require": ["error", { allowModules: runtimeModules }],
       "n/no-unpublished-require": ["error", { allowModules: runtimeModules }],
       "n/no-extraneous-require": ["error", { allowModules: runtimeModules }],

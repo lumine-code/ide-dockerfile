@@ -14,10 +14,7 @@ const withTimeout = (promise, label, timeout = TIMEOUT_MS) => {
   return Promise.race([
     promise,
     new Promise((_resolve, reject) => {
-      timer = setTimeout(
-        () => reject(new Error(`${label} timed out after ${timeout}ms`)),
-        timeout,
-      );
+      timer = setTimeout(() => reject(new Error(`${label} timed out after ${timeout}ms`)), timeout);
     }),
   ]).finally(() => clearTimeout(timer));
 };
@@ -45,12 +42,7 @@ const capabilities = () => ({
         snippetSupport: true,
         documentationFormat: ["markdown", "plaintext"],
         resolveSupport: {
-          properties: [
-            "documentation",
-            "detail",
-            "additionalTextEdits",
-            "command",
-          ],
+          properties: ["documentation", "detail", "additionalTextEdits", "command"],
         },
       },
     },
@@ -127,9 +119,7 @@ class LiveLspClient {
         log() {},
       },
     );
-    this.connection.onNotification((method, params) =>
-      this.notifications.push({ method, params }),
-    );
+    this.connection.onNotification((method, params) => this.notifications.push({ method, params }));
     this.connection.onRequest("workspace/configuration", ({ items }) =>
       Promise.all(
         items.map(({ section, scopeUri }) =>
@@ -137,27 +127,16 @@ class LiveLspClient {
         ),
       ),
     );
-    this.connection.onRequest(
-      "client/registerCapability",
-      ({ registrations }) => {
-        this.registrations.push(...registrations);
-        return null;
-      },
-    );
-    this.connection.onRequest(
-      "client/unregisterCapability",
-      ({ unregistrations = [] }) => {
-        const ids = new Set(unregistrations.map(({ id }) => id));
-        this.registrations = this.registrations.filter(
-          ({ id }) => !ids.has(id),
-        );
-        return null;
-      },
-    );
-    this.connection.onRequest(
-      "workspace/workspaceFolders",
-      () => this.workspaceFolders,
-    );
+    this.connection.onRequest("client/registerCapability", ({ registrations }) => {
+      this.registrations.push(...registrations);
+      return null;
+    });
+    this.connection.onRequest("client/unregisterCapability", ({ unregistrations = [] }) => {
+      const ids = new Set(unregistrations.map(({ id }) => id));
+      this.registrations = this.registrations.filter(({ id }) => !ids.has(id));
+      return null;
+    });
+    this.connection.onRequest("workspace/workspaceFolders", () => this.workspaceFolders);
     this.connection.onRequest("workspace/applyEdit", ({ label, edit }) => {
       this.appliedEdits.push({ label, edit });
       return { applied: true };
@@ -167,9 +146,7 @@ class LiveLspClient {
     this.connection.listen();
 
     const rootUri = pathToFileURL(this.rootPath).href;
-    this.workspaceFolders = [
-      { uri: rootUri, name: path.basename(this.rootPath) },
-    ];
+    this.workspaceFolders = [{ uri: rootUri, name: path.basename(this.rootPath) }];
     this.initializeResult = await this.request("initialize", {
       processId: process.pid,
       clientInfo: {
@@ -241,11 +218,7 @@ class LiveLspClient {
   async stop() {
     if (!this.connection) return;
     try {
-      await withTimeout(
-        this.connection.sendRequest("shutdown"),
-        "shutdown",
-        2000,
-      );
+      await withTimeout(this.connection.sendRequest("shutdown"), "shutdown", 2000);
       this.connection.sendNotification("exit");
     } catch {
       this.child?.kill();

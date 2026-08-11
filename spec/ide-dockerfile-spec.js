@@ -75,32 +75,24 @@ describe("ide-dockerfile adapter", () => {
   });
 
   it("answers every configuration section requested by the server", () => {
-    lumine.config.set(
-      "ide-dockerfile.formatter.ignoreMultilineInstructions",
-      true,
-    );
+    lumine.config.set("ide-dockerfile.formatter.ignoreMultilineInstructions", true);
     const all = adapter.getWorkspaceConfiguration();
-    expect(
-      all.docker.languageserver.formatter.ignoreMultilineInstructions,
-    ).toBe(true);
+    expect(all.docker.languageserver.formatter.ignoreMultilineInstructions).toBe(true);
     expect(adapter.getWorkspaceConfiguration("docker")).toEqual(all.docker);
     expect(adapter.getWorkspaceConfiguration("docker.languageserver")).toEqual(
       all.docker.languageserver,
     );
-    expect(
-      adapter.getWorkspaceConfiguration("docker.languageserver.diagnostics"),
-    ).toEqual(all.docker.languageserver.diagnostics);
-    expect(
-      adapter.getWorkspaceConfiguration("docker.languageserver.formatter"),
-    ).toEqual(all.docker.languageserver.formatter);
+    expect(adapter.getWorkspaceConfiguration("docker.languageserver.diagnostics")).toEqual(
+      all.docker.languageserver.diagnostics,
+    );
+    expect(adapter.getWorkspaceConfiguration("docker.languageserver.formatter")).toEqual(
+      all.docker.languageserver.formatter,
+    );
     expect(adapter.getWorkspaceConfiguration("editor")).toBeUndefined();
   });
 
   it("transcribes every diagnostic severity", () => {
-    lumine.config.set(
-      "ide-dockerfile.diagnostics.deprecatedMaintainer",
-      "error",
-    );
+    lumine.config.set("ide-dockerfile.diagnostics.deprecatedMaintainer", "error");
     lumine.config.set("ide-dockerfile.diagnostics.instructionCasing", "ignore");
     const diagnostics = adapter.getSettings().docker.languageserver.diagnostics;
     expect(Object.keys(diagnostics)).toEqual([
@@ -120,18 +112,16 @@ describe("ide-dockerfile adapter", () => {
   it("maps the diagnostics feature switch to ignored server checks", () => {
     lumine.config.set("ide-dockerfile.features.diagnostics", false);
     expect(
-      Object.values(
-        adapter.getSettings().docker.languageserver.diagnostics,
-      ).every((severity) => severity === "ignore"),
+      Object.values(adapter.getSettings().docker.languageserver.diagnostics).every(
+        (severity) => severity === "ignore",
+      ),
     ).toBe(true);
   });
 
   it("restarts live sessions after the executable path changes", async () => {
     disposable.dispose();
     const session = { adapter: null, state: "running" };
-    const restart = jasmine
-      .createSpy("restart")
-      .and.returnValue(Promise.resolve());
+    const restart = jasmine.createSpy("restart").and.returnValue(Promise.resolve());
     ({ adapter, disposable } = registerAdapter({
       getSessions: () => [session],
       restart,
@@ -143,23 +133,21 @@ describe("ide-dockerfile adapter", () => {
   });
 
   it("declares switches for exactly the shared capabilities the server advertises", () => {
-    expect(
-      Object.keys(require("../package.json").configSchema.features.properties),
-    ).toEqual(FEATURES);
+    expect(Object.keys(require("../package.json").configSchema.features.properties)).toEqual(
+      FEATURES,
+    );
   });
 });
 
 describe("ide-dockerfile feature contracts", () => {
-  const definitions =
-    require("../package.json").configSchema.features.properties;
+  const definitions = require("../package.json").configSchema.features.properties;
 
   beforeEach(async () => {
     await lumine.packages.activatePackage("ide-dockerfile");
   });
 
   afterEach(async () => {
-    for (const feature of FEATURES)
-      lumine.config.unset(`ide-dockerfile.features.${feature}`);
+    for (const feature of FEATURES) lumine.config.unset(`ide-dockerfile.features.${feature}`);
     await lumine.packages.deactivatePackage("ide-dockerfile");
   });
 

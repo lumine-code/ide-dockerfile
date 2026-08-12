@@ -2,7 +2,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const main = require("../lib/main");
-const { LiveLspClient, fileUri, position } = require("./helpers/live-lsp-client");
+const { LiveLspClient, fileUri, position, replaceOnce } = require("./helpers/live-lsp-client");
 
 const registerAdapter = () => {
   let adapter;
@@ -211,10 +211,9 @@ describe("ide-dockerfile bundled server", () => {
     expect(client.appliedEdits.length).toBe(1);
     expect(client.appliedEdits[0].edit.documentChanges[0].edits[0].newText).toBe("FROM");
 
-    const fixed = source
-      .replace("from", "FROM")
-      .replace("MAINTAINER Example <example@example.com>\n", "")
-      .replace("CMD ['sh']", 'CMD ["sh"]');
+    let fixed = replaceOnce(source, "from", "FROM");
+    fixed = replaceOnce(fixed, "MAINTAINER Example <example@example.com>\n");
+    fixed = replaceOnce(fixed, "CMD ['sh']", 'CMD ["sh"]');
     client.change(uri, fixed);
     await client.waitFor(
       () =>

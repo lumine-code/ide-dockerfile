@@ -237,6 +237,20 @@ class LiveLspClient {
 }
 
 exports.LiveLspClient = LiveLspClient;
+
+// Edit a fixture and refuse to carry on when the search text is not there.
+// String#replace returns the subject untouched when it matches nothing, so a
+// fixture that has drifted — or that git rewrote on the way to the worktree —
+// leaves the document unchanged and the spec waits out its timeout for a
+// revalidation the server had no reason to publish. Fail at the edit, where the
+// reason is still legible.
+exports.replaceOnce = (source, search, replacement = "") => {
+  if (!source.includes(search)) {
+    throw new Error(`Fixture does not contain ${JSON.stringify(search)}`);
+  }
+  return source.replace(search, replacement);
+};
+
 exports.fileUri = (filePath) => pathToFileURL(filePath).href;
 exports.position = (line, character) => ({ line, character });
 exports.positionParams = (uri, line, character) => ({

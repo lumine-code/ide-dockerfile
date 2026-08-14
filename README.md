@@ -16,11 +16,11 @@ Registers the bundled Dockerfile Language Server with `ide-client`, providing co
 
 ## Installation
 
-To install `ide-dockerfile`, search for _ide-dockerfile_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/ide-dockerfile`.
+To install `ide-dockerfile` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-dockerfile`.
 
 ## Services
 
-- **ide-client** (`^1.0.0`): consumed to register the Dockerfile adapter with the editor's language-server client.
+- `ide-client`: consumed to register the Dockerfile adapter with the editor's language-server client.
 
 ## Contributing
 

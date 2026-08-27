@@ -63,71 +63,83 @@
     "features": {
       "title": "Features",
       "description": "Which parts of the Dockerfile server the editor uses. Turning one off hands it to the next server serving the same file.",
+      "scopeResolution": "grammar",
       "type": "object",
       "properties": {
         "diagnostics": {
           "title": "Diagnostics",
           "description": "Report invalid and discouraged Dockerfile constructs in the linter.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "autocomplete": {
           "title": "Autocomplete",
           "description": "Offer Dockerfile instructions, arguments, variables, images and build stages.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "hover": {
           "title": "Hover",
           "description": "Show directive documentation and symbol information on hover.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "signature": {
           "title": "Signature Help",
           "description": "Show the expected form of the current Dockerfile instruction.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "definition": {
           "title": "Go To Definition",
           "description": "Jump to build-stage and variable definitions.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "symbols": {
           "title": "Symbols",
           "description": "Serve Dockerfile symbols to go-to-symbol.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "outline": {
           "title": "Outline",
           "description": "Fill the outline panel with build stages and instructions.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "format": {
           "title": "Format",
           "description": "Format whole Dockerfiles and selected ranges.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "rename": {
           "title": "Rename",
           "description": "Rename resolved variables and build stages.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "codeActions": {
           "title": "Code Actions",
           "description": "Offer fixes reported by the Dockerfile server.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         },
         "semanticTokens": {
           "title": "Semantic Tokens",
           "description": "Apply server-computed highlighting to Dockerfile symbols.",
+          "scopeResolution": "grammar",
           "type": "boolean",
           "default": true
         }

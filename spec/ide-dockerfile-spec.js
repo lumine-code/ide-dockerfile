@@ -9,7 +9,6 @@ const FEATURES = [
   "signature",
   "definition",
   "symbols",
-  "outline",
   "format",
   "rename",
   "codeActions",

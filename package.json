@@ -103,14 +103,7 @@
         },
         "symbols": {
           "title": "Symbols",
-          "description": "Serve Dockerfile symbols to go-to-symbol.",
-          "scopeResolution": "grammar",
-          "type": "boolean",
-          "default": true
-        },
-        "outline": {
-          "title": "Outline",
-          "description": "Fill the outline panel with build stages and instructions.",
+          "description": "Serve Dockerfile symbols to navigation features.",
           "scopeResolution": "grammar",
           "type": "boolean",
           "default": true

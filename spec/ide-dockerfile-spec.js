@@ -85,6 +85,7 @@ describe("ide-dockerfile adapter", () => {
     expect(adapter.grammarScopes).toEqual(["source.dockerfile"]);
     expect(adapter.sessionScope).toBe("project-root");
     expect(adapter.settingsKeyPaths).toEqual(["ide-dockerfile"]);
+    expect(adapter.restartKeyPaths).toEqual(["ide-dockerfile.serverPath"]);
     const launch = await adapter.resolveServer({ rootPath: __dirname });
     expect(launch.cwd).toBe(__dirname);
     expect(launch.transport).toBe("stdio");
@@ -132,20 +133,6 @@ describe("ide-dockerfile adapter", () => {
         (severity) => severity === "ignore",
       ),
     ).toBe(true);
-  });
-
-  it("restarts live sessions after the executable path changes", async () => {
-    disposable.dispose();
-    const session = { adapter: null, state: "running" };
-    const restart = jasmine.createSpy("restart").and.returnValue(Promise.resolve());
-    ({ adapter, disposable } = registerAdapter({
-      getSessions: () => [session],
-      restart,
-    }));
-    session.adapter = adapter;
-    lumine.config.set("ide-dockerfile.serverPath", process.execPath);
-    await Promise.resolve();
-    expect(restart).toHaveBeenCalledOnceWith(session);
   });
 
   it("declares switches for exactly the shared capabilities the server advertises", () => {

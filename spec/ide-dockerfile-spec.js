@@ -135,10 +135,29 @@ describe("ide-dockerfile adapter", () => {
     ).toBe(true);
   });
 
+  it("preserves a grammar-scoped diagnostics override", () => {
+    lumine.config.set("ide-dockerfile.features.diagnostics", false);
+    lumine.config.set("ide-dockerfile.features.diagnostics", true, {
+      scopeSelector: ".source.dockerfile",
+    });
+    expect(adapter.getSettings().docker.languageserver.diagnostics.directiveCasing).toBe("warning");
+  });
+
   it("declares switches for exactly the shared capabilities the server advertises", () => {
     expect(Object.keys(require("../package.json").configSchema.features.properties)).toEqual(
       FEATURES,
     );
+  });
+
+  it("describes every titled configuration setting", () => {
+    const missing = [];
+    const visit = (value, keyPath = "") => {
+      if (value?.title && !value.description) missing.push(keyPath);
+      for (const [key, child] of Object.entries(value?.properties || {}))
+        visit(child, keyPath ? `${keyPath}.${key}` : key);
+    };
+    visit({ properties: require("../package.json").configSchema });
+    expect(missing).toEqual([]);
   });
 });
 

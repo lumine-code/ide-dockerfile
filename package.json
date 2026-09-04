@@ -145,6 +145,7 @@
       "properties": {
         "deprecatedMaintainer": {
           "title": "Deprecated Maintainer",
+          "description": "Report the deprecated MAINTAINER instruction.",
           "type": "string",
           "enum": [
             "ignore",
@@ -155,6 +156,7 @@
         },
         "directiveCasing": {
           "title": "Directive Casing",
+          "description": "Report parser directives whose casing is inconsistent.",
           "type": "string",
           "enum": [
             "ignore",
@@ -165,6 +167,7 @@
         },
         "emptyContinuationLine": {
           "title": "Empty Continuation Line",
+          "description": "Report empty lines inside continued instructions.",
           "type": "string",
           "enum": [
             "ignore",
@@ -175,6 +178,7 @@
         },
         "instructionCasing": {
           "title": "Instruction Casing",
+          "description": "Report instruction keywords whose casing is inconsistent.",
           "type": "string",
           "enum": [
             "ignore",
@@ -185,6 +189,7 @@
         },
         "instructionCmdMultiple": {
           "title": "Multiple CMD Instructions",
+          "description": "Report Dockerfiles containing more than one CMD instruction.",
           "type": "string",
           "enum": [
             "ignore",
@@ -195,6 +200,7 @@
         },
         "instructionEntrypointMultiple": {
           "title": "Multiple ENTRYPOINT Instructions",
+          "description": "Report Dockerfiles containing more than one ENTRYPOINT instruction.",
           "type": "string",
           "enum": [
             "ignore",
@@ -205,6 +211,7 @@
         },
         "instructionHealthcheckMultiple": {
           "title": "Multiple HEALTHCHECK Instructions",
+          "description": "Report Dockerfiles containing more than one HEALTHCHECK instruction.",
           "type": "string",
           "enum": [
             "ignore",
@@ -215,6 +222,7 @@
         },
         "instructionJSONInSingleQuotes": {
           "title": "Single-Quoted JSON Instruction",
+          "description": "Report JSON-form instructions written with single quotes.",
           "type": "string",
           "enum": [
             "ignore",

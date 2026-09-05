@@ -16,7 +16,9 @@ Registers the bundled Dockerfile Language Server with `ide-client`, providing co
 
 ## Installation
 
-Install `ide-client` first. Then install `ide-dockerfile` from the Install pane of the Lumine settings, or run `lumine --install lumine-code/ide-dockerfile`.
+To install `ide-dockerfile` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-dockerfile`.
+
+Install `ide-client` first.
 
 ## Services
 

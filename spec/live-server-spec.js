@@ -6,7 +6,7 @@ const { LiveLspClient, fileUri, position, replaceOnce } = require("./helpers/liv
 
 const registerAdapter = () => {
   let adapter;
-  const disposable = main.consumeIdeClient({
+  const disposable = main.consumeIde({
     registerAdapter(registered) {
       adapter = registered;
       return { dispose() {} };

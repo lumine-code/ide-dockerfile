@@ -2,7 +2,7 @@
 
 Dockerfile language-server adapter.
 
-Registers the bundled Dockerfile Language Server with `ide-client`, providing completion, diagnostics, navigation, symbols, formatting, rename, code actions, links, folding, and semantic highlighting for Dockerfiles and Containerfiles.
+Registers the bundled Dockerfile Language Server with `ide`, providing completion, diagnostics, navigation, symbols, formatting, rename, code actions, links, folding, and semantic highlighting for Dockerfiles and Containerfiles.
 
 ## Features
 
@@ -18,11 +18,11 @@ Registers the bundled Dockerfile Language Server with `ide-client`, providing co
 
 To install `ide-dockerfile` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-dockerfile`.
 
-Install `ide-client` first.
+Install `ide` first.
 
 ## Services
 
-- `ide-client`: consumed to register the Dockerfile adapter with the editor's language-server client.
+- `ide`: consumed to register the Dockerfile adapter with the editor's language-server client.
 
 ## Contributing
 

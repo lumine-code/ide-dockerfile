@@ -91,21 +91,11 @@ describe("ide-dockerfile adapter", () => {
     expect(launch.transport).toBe("stdio");
   });
 
-  it("answers every configuration section requested by the server", () => {
+  it("keeps server settings in one canonical Docker configuration tree", () => {
     lumine.config.set("ide-dockerfile.formatter.ignoreMultilineInstructions", true);
-    const all = adapter.getWorkspaceConfiguration();
+    const all = adapter.getSettings();
     expect(all.docker.languageserver.formatter.ignoreMultilineInstructions).toBe(true);
-    expect(adapter.getWorkspaceConfiguration("docker")).toEqual(all.docker);
-    expect(adapter.getWorkspaceConfiguration("docker.languageserver")).toEqual(
-      all.docker.languageserver,
-    );
-    expect(adapter.getWorkspaceConfiguration("docker.languageserver.diagnostics")).toEqual(
-      all.docker.languageserver.diagnostics,
-    );
-    expect(adapter.getWorkspaceConfiguration("docker.languageserver.formatter")).toEqual(
-      all.docker.languageserver.formatter,
-    );
-    expect(adapter.getWorkspaceConfiguration("editor")).toBeUndefined();
+    expect(adapter.getWorkspaceConfiguration).toBeUndefined();
   });
 
   it("transcribes every diagnostic severity", () => {

@@ -1,6 +1,9 @@
+const { serverContext } = require("./helpers/server-context");
 const fs = require("fs");
 const main = require("../lib/main");
-const { resolveServer, managedServer } = require("../lib/server");
+const { resolveServer: resolveServerWithContext, managedServer } = require("../lib/server");
+const resolveServer = (configuredPath, managedServer = null) =>
+  resolveServerWithContext(serverContext({ rootPath: __dirname, managedServer }), configuredPath);
 
 const FEATURES = [
   "diagnostics",
@@ -33,7 +36,9 @@ const registerAdapter = (overrides = {}) => {
 describe("ide-dockerfile server resolution", () => {
   it("uses a configured executable with stdio", async () => {
     const launch = await resolveServer(process.execPath);
-    expect(launch).toEqual({ command: process.execPath, args: ["--stdio"] });
+    expect(launch).toEqual(
+      jasmine.objectContaining({ command: process.execPath, args: ["--stdio"] }),
+    );
   });
 
   it("launches the exact bundled server through Electron's Node runtime", async () => {
@@ -48,7 +53,10 @@ describe("ide-dockerfile server resolution", () => {
   });
 
   it("prefers a managed install over the bundled server", async () => {
-    const managed = { modulePath: "/managed/server.js", version: "9.9.9" };
+    const managed = {
+      modulePath: require.resolve("dockerfile-language-server-nodejs/lib/server.js"),
+      version: "9.9.9",
+    };
     const launch = await resolveServer("", managed);
     expect(launch.args[0]).toBe(managed.modulePath);
     // Reported in the session details, so which copy is running is visible.
@@ -86,7 +94,7 @@ describe("ide-dockerfile adapter", () => {
     expect(adapter.sessionScope).toBe("project-root");
     expect(adapter.settingsKeyPaths).toEqual(["ide-dockerfile"]);
     expect(adapter.restartKeyPaths).toEqual(["ide-dockerfile.serverPath"]);
-    const launch = await adapter.resolveServer({ rootPath: __dirname });
+    const launch = await adapter.resolveServer(serverContext({ rootPath: __dirname }));
     expect(launch.cwd).toBe(__dirname);
     expect(launch.transport).toBe("stdio");
   });
@@ -173,4 +181,12 @@ describe("ide-dockerfile feature contracts", () => {
       expect(lumine.config.get(keyPath)).toBe(false);
     });
   }
+});
+
+describe("ide-dockerfile shared server resolution", () => {
+  it("preserves an unavailable selection as null", async () => {
+    const { resolveServer: resolveWithContext } = require("../lib/server");
+    const resolver = { select: jasmine.createSpy("select").and.resolveTo(null) };
+    expect(await resolveWithContext({ rootPath: __dirname, resolver }, "")).toBeNull();
+  });
 });

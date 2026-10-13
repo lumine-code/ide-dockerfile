@@ -14,6 +14,8 @@ Registers the bundled Dockerfile Language Server with `ide`, providing completio
 - **Feature switches**: each shared IDE capability can be handed to another server serving the same file.
 - **Project sessions**: one server per project root, started lazily with the first Dockerfile editor.
 
+![The Dockerfile language server warns about competing CMD instructions.](.github/demo.png)
+
 ## Installation
 
 To install `ide-dockerfile` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/ide-dockerfile`.

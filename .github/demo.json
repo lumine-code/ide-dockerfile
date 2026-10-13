@@ -1,0 +1,16 @@
+{
+  "title": "ide-dockerfile",
+  "description": "The Dockerfile language server warns about competing CMD instructions.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "00d5d5acc77734d09fe6d0f284a30e8a1ebe3d40",
+  "mode": "normal",
+  "fontSettings": "default",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "The Dockerfile language server warns about competing CMD instructions.",
+      "width": 1100,
+      "height": 490
+    }
+  ]
+}
